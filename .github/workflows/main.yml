@@ -12,9 +12,18 @@ jobs:
         run: docker pull ghcr.io/typst/typst:0.14.2
       - name: Compile typst
         run: docker run --rm -v ${{ github.workspace }}:/workspace ghcr.io/typst/typst:0.14.2 compile /workspace/curriculum-vitae.typ
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      - name: Delete previous release and tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete latest --yes || true
+          git push origin :refs/tags/latest || true
+          git tag -d latest || true
+      
+      - name: Create new release
+        uses: softprops/action-gh-release@v2
         with:
-          name: curriculum-vitae
-          path: curriculum-vitae.pdf
-          
+          files: curriculum-vitae.pdf
+          tag_name: latest
+          name: "Latest Release"
+          body: "Automatically created release"
