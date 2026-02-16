@@ -22,7 +22,7 @@
   / Email: #link("mailto:" + data.contacts.email, data.contacts.email)
   / Phone: #data.contacts.phone
   / Github: #link(data.contacts.github)
-  // / LinkedIn: #link()
+  / LinkedIn:
   / Updated: #datetime.today().display("[day] [month repr:short] [year]")
 ]
 
