@@ -26,8 +26,8 @@ languages:
   - Python
   - Bash
   - JavaScript
-  - CSS
   - HTML
+  - CSS
   - C#
 
 projects:
