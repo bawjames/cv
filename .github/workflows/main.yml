@@ -7,20 +7,14 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: github.actor != 'github-actions[bot]'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Install typst (if needed)
+      - name: Install Typst (if needed)
         run: docker pull ghcr.io/typst/typst:0.14.2
-      - name: Compile typst
+      - name: Compile Typst
         run: docker run --rm -v ${{ github.workspace }}:/workspace ghcr.io/typst/typst:0.14.2 compile /workspace/curriculum-vitae.typ
-      - name: Delete previous release and tag
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh release delete latest --yes || true
-          git push origin :refs/tags/latest || true
-          git tag -d latest || true
       - name: Commit PDF
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
